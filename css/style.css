@@ -1,0 +1,497 @@
+/* ==========================================================================
+   Карточка товара Teaboom — mobile-first
+   Брейкпоинты: 768px (tablet), 1200px (desktop)
+   ========================================================================== */
+
+:root {
+  --color-text: #202020;
+  --color-text-muted: #666;
+  --color-accent: #f5d730;
+  --color-accent-hover: #e6c61a;
+  --color-accent-soft: #fdf8dc;
+  --color-price: #d0021b;
+  --color-success: #3a8f3a;
+  --color-border: #e3e3e3;
+  --color-surface: #f6f7f8;
+  --color-bg: #fff;
+
+  --font-base: "Open Sans", -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+
+  --radius-s: 6px;
+  --radius-m: 12px;
+  --gutter: 16px;
+  --transition: 0.2s ease;
+}
+
+/* Base
+   ========================================================================== */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-base);
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--color-text);
+  background: var(--color-bg);
+  -webkit-font-smoothing: antialiased;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+a {
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-text);
+  outline-offset: 2px;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 16px var(--gutter) 48px;
+}
+
+/* Breadcrumbs
+   ========================================================================== */
+
+.breadcrumbs {
+  margin-bottom: 16px;
+  font-size: 13px;
+  color: var(--color-text-muted);
+}
+
+.breadcrumbs__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.breadcrumbs__item:not(:last-child)::after {
+  content: "/";
+  margin: 0 8px;
+  color: var(--color-border);
+}
+
+.breadcrumbs__link {
+  text-decoration: none;
+  transition: color var(--transition);
+}
+
+.breadcrumbs__link:hover {
+  color: var(--color-text);
+}
+
+/* На мобильном показываем только ближайший уровень, чтобы крошки не занимали пол-экрана */
+@media (max-width: 767px) {
+  .breadcrumbs__item:not(:nth-last-child(2)) {
+    display: none;
+  }
+
+  .breadcrumbs__item:nth-last-child(2)::after {
+    content: none;
+  }
+
+  .breadcrumbs__link::before {
+    content: "← ";
+  }
+}
+
+/* Product layout
+   ========================================================================== */
+
+.product {
+  display: grid;
+  grid-template-areas:
+    "head"
+    "gallery"
+    "buy"
+    "about";
+  gap: 20px;
+}
+
+.product__head    { grid-area: head; }
+.product__gallery { grid-area: gallery; }
+.product__buy     { grid-area: buy; }
+.product__about   { grid-area: about; }
+
+@media (min-width: 768px) {
+  .product {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-areas:
+      "gallery head"
+      "gallery buy"
+      "about   about";
+    grid-template-rows: auto 1fr auto;
+    column-gap: 32px;
+    row-gap: 24px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .product {
+    grid-template-columns: 560px minmax(0, 1fr);
+    grid-template-areas:
+      "gallery head"
+      "gallery buy"
+      "gallery about";
+    grid-template-rows: auto auto 1fr;
+    column-gap: 56px;
+  }
+}
+
+/* Head */
+
+.product__category {
+  display: inline-block;
+  margin-bottom: 6px;
+  font-size: 13px;
+  color: var(--color-text-muted);
+  text-decoration: none;
+  transition: color var(--transition);
+}
+
+.product__category:hover {
+  color: var(--color-text);
+  text-decoration: underline;
+}
+
+.product__title {
+  margin: 0;
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+@media (min-width: 1200px) {
+  .product__title {
+    font-size: 36px;
+  }
+}
+
+/* Gallery */
+
+.product__gallery {
+  position: relative;
+  align-self: start;
+  margin: 0;
+  overflow: hidden;
+  border-radius: var(--radius-m);
+  background: var(--color-surface);
+}
+
+.product__image {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+}
+
+.product__badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  z-index: 1;
+  padding: 4px 10px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #fff;
+  background: var(--color-price);
+  border-radius: 20px;
+}
+
+/* About */
+
+.product__subtitle {
+  margin: 0 0 8px;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.product__text {
+  margin: 0 0 12px;
+}
+
+.product__text--muted {
+  font-size: 14px;
+  color: var(--color-text-muted);
+}
+
+/* Buy block
+   ========================================================================== */
+
+.buy {
+  display: grid;
+  gap: 20px;
+  padding: 20px;
+  background: var(--color-surface);
+  border-radius: var(--radius-m);
+}
+
+@media (min-width: 1200px) {
+  .buy {
+    grid-template-columns: 1fr auto;
+    align-items: end;
+    padding: 28px;
+  }
+
+  .buy__packs,
+  .buy__meta {
+    grid-column: 1 / -1;
+  }
+}
+
+.buy__packs {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.buy__label {
+  margin-bottom: 10px;
+  padding: 0;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.buy__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 24px;
+  margin: 0;
+  font-size: 14px;
+}
+
+.buy__meta-row {
+  display: flex;
+  gap: 6px;
+}
+
+.buy__meta dt {
+  color: var(--color-text-muted);
+}
+
+.buy__meta dd {
+  margin: 0;
+  font-weight: 600;
+}
+
+.buy__stock {
+  color: var(--color-success);
+}
+
+.buy__submit {
+  width: 100%;
+}
+
+@media (min-width: 1200px) {
+  .buy__submit {
+    width: auto;
+    min-width: 220px;
+  }
+}
+
+/* Packs (переключатель фасовки) */
+
+.packs {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+
+/* Очень узкие телефоны и узкая колонка планшета — две фасовки в ряд */
+@media (max-width: 359px), (min-width: 768px) and (max-width: 1199px) {
+  .packs {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.pack {
+  position: relative;
+  cursor: pointer;
+}
+
+.pack__input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  margin: 0;
+  cursor: pointer;
+}
+
+.pack__name {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 8px 4px;
+  font-size: 15px;
+  font-weight: 600;
+  white-space: nowrap;
+  background: var(--color-bg);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-s);
+  transition: border-color var(--transition), background-color var(--transition);
+}
+
+.pack:hover .pack__name {
+  border-color: #bdbdbd;
+}
+
+.pack__input:checked + .pack__name {
+  background: var(--color-accent-soft);
+  border-color: var(--color-accent);
+}
+
+.pack__input:focus-visible + .pack__name {
+  outline: 2px solid var(--color-text);
+  outline-offset: 2px;
+}
+
+/* Price */
+
+.price {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 2px 12px;
+}
+
+.price p {
+  margin: 0;
+}
+
+.price__current {
+  font-size: 30px;
+  font-weight: 800;
+  line-height: 1.1;
+  color: var(--color-price);
+  white-space: nowrap;
+}
+
+.price__old {
+  font-size: 17px;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+}
+
+.price__old[hidden] {
+  display: none;
+}
+
+.price__unit {
+  flex-basis: 100%;
+  font-size: 13px;
+  color: var(--color-text-muted);
+}
+
+/* Button
+   ========================================================================== */
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 52px;
+  padding: 12px 28px;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-text);
+  background: var(--color-accent);
+  border: 0;
+  border-radius: var(--radius-s);
+  cursor: pointer;
+  transition: background-color var(--transition), box-shadow var(--transition), transform var(--transition);
+}
+
+.button:hover {
+  background: var(--color-accent-hover);
+  box-shadow: 0 6px 16px rgba(245, 215, 48, 0.45);
+}
+
+.button:active {
+  transform: translateY(1px);
+  box-shadow: none;
+}
+
+.button__icon {
+  flex-shrink: 0;
+}
+
+/* Кратковременное состояние после клика */
+.button.is-added {
+  color: #fff;
+  background: var(--color-success);
+  box-shadow: none;
+}
+
+/* Brew hints
+   ========================================================================== */
+
+.brew {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin: 16px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.brew__item {
+  display: flex;
+  flex-direction: column;
+  padding: 12px;
+  text-align: center;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-s);
+}
+
+.brew__value {
+  font-size: 17px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.brew__caption {
+  font-size: 12px;
+  line-height: 1.3;
+  color: var(--color-text-muted);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
+  }
+}
