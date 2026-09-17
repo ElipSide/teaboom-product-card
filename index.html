@@ -13,15 +13,26 @@
 </head>
 <body>
   <main class="page">
-    <nav class="breadcrumbs" aria-label="Хлебные крошки">
-      <ol class="breadcrumbs__list">
-        <li class="breadcrumbs__item"><a class="breadcrumbs__link" href="#">Главная</a></li>
-        <li class="breadcrumbs__item"><a class="breadcrumbs__link" href="#">Каталог</a></li>
-        <li class="breadcrumbs__item"><a class="breadcrumbs__link" href="#">Улун</a></li>
-        <li class="breadcrumbs__item"><a class="breadcrumbs__link" href="#">Ароматизированный улун</a></li>
-        <li class="breadcrumbs__item" aria-current="page">Ананасовый улун</li>
-      </ol>
-    </nav>
+    <div class="page__top">
+      <nav class="breadcrumbs" aria-label="Хлебные крошки">
+        <ol class="breadcrumbs__list">
+          <li class="breadcrumbs__item"><a class="breadcrumbs__link" href="#">Главная</a></li>
+          <li class="breadcrumbs__item"><a class="breadcrumbs__link" href="#">Каталог</a></li>
+          <li class="breadcrumbs__item"><a class="breadcrumbs__link" href="#">Улун</a></li>
+          <li class="breadcrumbs__item"><a class="breadcrumbs__link" href="#">Ароматизированный улун</a></li>
+          <li class="breadcrumbs__item" aria-current="page">Ананасовый улун</li>
+        </ol>
+      </nav>
+
+      <button class="cart-button" type="button" data-cart-open aria-haspopup="dialog" aria-label="Корзина">
+        <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M3 4h2l2.4 11.2a1 1 0 0 0 1 .8h9.2a1 1 0 0 0 1-.76L21 8H6.2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="9" cy="20" r="1.5" fill="currentColor"/>
+          <circle cx="18" cy="20" r="1.5" fill="currentColor"/>
+        </svg>
+        <span class="cart-button__count" data-cart-count hidden>0</span>
+      </button>
+    </div>
 
     <article class="product" data-product>
       <header class="product__head">
@@ -102,11 +113,11 @@
             </button>
 
             <div class="cart-control__added" data-cart-added hidden>
-              <a class="button button--success cart-control__link" href="#cart" aria-label="Перейти в корзину">
+              <button class="button button--success cart-control__link" type="button" data-cart-open aria-haspopup="dialog" aria-label="Открыть корзину">
                 <svg class="button__icon" width="22" height="22" viewBox="0 0 24 24" aria-hidden="true">
                   <path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
-              </a>
+              </button>
 
               <div class="stepper" role="group" aria-label="Количество выбранной фасовки">
                 <button class="stepper__button" type="button" data-cart-dec aria-label="Убрать одну упаковку">
@@ -120,7 +131,7 @@
             </div>
           </div>
 
-          <div class="cart-summary" id="cart" data-cart-summary hidden>
+          <div class="cart-summary" data-cart-summary hidden>
             <p class="cart-summary__title">В корзине</p>
             <ul class="cart-summary__list" data-cart-list></ul>
             <p class="cart-summary__total">
@@ -158,6 +169,59 @@
       </section>
     </article>
   </main>
+
+  <dialog class="modal" data-cart-modal aria-labelledby="cart-modal-title">
+    <div class="modal__inner">
+      <header class="modal__header">
+        <h2 class="modal__title" id="cart-modal-title">Корзина</h2>
+        <button class="modal__close" type="button" data-cart-close aria-label="Закрыть корзину">
+          <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>
+        </button>
+      </header>
+
+      <div class="modal__body">
+        <ul class="cart-list" data-modal-list></ul>
+
+        <div class="cart-empty" data-modal-empty hidden>
+          <p class="cart-empty__title">Корзина пуста</p>
+          <p class="cart-empty__text">Выберите фасовку и нажмите «В корзину».</p>
+          <button class="button" type="button" data-cart-close>Продолжить покупки</button>
+        </div>
+      </div>
+
+      <footer class="modal__footer" data-modal-footer hidden>
+        <p class="modal__total">
+          <span>Итого, <span data-modal-count>0 товаров</span></span>
+          <b data-modal-total>0 ₽</b>
+        </p>
+        <button class="button modal__checkout" type="button" data-cart-checkout>Оформить заказ</button>
+        <p class="modal__note" data-checkout-note hidden>Демо-версия: оформление заказа не подключено.</p>
+      </footer>
+    </div>
+  </dialog>
+
+  <template id="cart-item-template">
+    <li class="cart-item">
+      <img class="cart-item__image" src="img/ananasovyj-ulun-400x400.jpg" width="64" height="64" alt="">
+      <div class="cart-item__info">
+        <p class="cart-item__name">Ананасовый улун</p>
+        <p class="cart-item__meta" data-item-meta></p>
+      </div>
+      <button class="cart-item__remove" type="button" data-item-action="remove">
+        <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="stepper stepper--small cart-item__stepper" role="group">
+        <button class="stepper__button" type="button" data-item-action="dec">
+          <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg>
+        </button>
+        <output class="stepper__value" data-item-qty></output>
+        <button class="stepper__button" type="button" data-item-action="inc">
+          <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+      <p class="cart-item__sum" data-item-sum></p>
+    </li>
+  </template>
 
   <script src="js/product.js" defer></script>
 </body>

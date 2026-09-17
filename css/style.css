@@ -75,11 +75,79 @@ a {
   padding: 16px var(--gutter) 48px;
 }
 
+/* Top bar: крошки + корзина
+   ========================================================================== */
+
+.page__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.cart-button {
+  position: relative;
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  color: var(--color-text);
+  background: var(--color-surface);
+  border: 0;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background-color var(--transition);
+}
+
+.cart-button:hover {
+  background: var(--color-accent);
+}
+
+.cart-button__count {
+  position: absolute;
+  top: -2px;
+  right: -4px;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 6px;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 22px;
+  text-align: center;
+  color: var(--color-text);
+  background: var(--color-accent);
+  border: 2px solid var(--color-bg);
+  border-radius: 11px;
+  box-sizing: content-box;
+}
+
+.cart-button:hover .cart-button__count {
+  color: #fff;
+  background: var(--color-text);
+}
+
+.cart-button__count[hidden] {
+  display: none;
+}
+
+/* Мягкий «пульс» иконки при добавлении товара */
+.cart-button.is-bumped {
+  animation: cart-bump 0.35s ease;
+}
+
+@keyframes cart-bump {
+  50% { transform: scale(1.15); }
+}
+
 /* Breadcrumbs
    ========================================================================== */
 
 .breadcrumbs {
-  margin-bottom: 16px;
+  min-width: 0;
   font-size: 13px;
   color: var(--color-text-muted);
 }
@@ -635,10 +703,278 @@ a {
   color: var(--color-text-muted);
 }
 
+/* Stepper: компактный вариант для модалки */
+
+.stepper--small {
+  flex: none;
+  min-height: 40px;
+  padding: 2px;
+}
+
+.stepper--small .stepper__button {
+  width: 34px;
+  height: 34px;
+}
+
+.stepper--small .stepper__value {
+  min-width: 3ch;
+  font-size: 15px;
+}
+
+/* Cart modal
+   ========================================================================== */
+
+html:has(.modal[open]) {
+  overflow: hidden;
+}
+
+.modal {
+  width: min(520px, calc(100% - 32px));
+  max-width: none;
+  max-height: min(720px, calc(100% - 32px));
+  padding: 0;
+  color: var(--color-text);
+  background: var(--color-bg);
+  border: 0;
+  border-radius: var(--radius-m);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.25);
+}
+
+.modal::backdrop {
+  background: rgba(32, 32, 32, 0.55);
+}
+
+.modal[open] {
+  animation: modal-in 0.25s ease;
+}
+
+.modal[open]::backdrop {
+  animation: fade-in 0.25s ease;
+}
+
+@keyframes modal-in {
+  from { opacity: 0; transform: translateY(16px); }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+}
+
+/* На телефоне — шторка снизу */
+@media (max-width: 767px) {
+  .modal {
+    width: 100%;
+    max-height: 88dvh;
+    margin: auto 0 0;
+    border-radius: 16px 16px 0 0;
+  }
+
+  .modal[open] {
+    animation-name: sheet-in;
+  }
+
+  @keyframes sheet-in {
+    from { transform: translateY(100%); }
+  }
+}
+
+/* Внутренняя обёртка: клик мимо неё = клик по подложке */
+.modal__inner {
+  display: flex;
+  flex-direction: column;
+  max-height: inherit;
+}
+
+.modal__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.modal__title {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.modal__close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  margin-right: -8px;
+  padding: 0;
+  color: var(--color-text-muted);
+  background: transparent;
+  border: 0;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background-color var(--transition), color var(--transition);
+}
+
+.modal__close:hover {
+  color: var(--color-text);
+  background: var(--color-surface);
+}
+
+.modal__body {
+  flex: 1;
+  min-height: 0;
+  padding: 4px 20px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.modal__footer {
+  display: grid;
+  gap: 12px;
+  padding: 16px 20px 20px;
+  background: var(--color-surface);
+  border-top: 1px solid var(--color-border);
+}
+
+.modal__footer[hidden] {
+  display: none;
+}
+
+.modal__total {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 0;
+  color: var(--color-text-muted);
+}
+
+.modal__total b {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--color-text);
+  white-space: nowrap;
+}
+
+.modal__note {
+  margin: 0;
+  font-size: 13px;
+  text-align: center;
+  color: var(--color-text-muted);
+}
+
+/* Cart items */
+
+.cart-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.cart-item {
+  display: grid;
+  grid-template-columns: 64px minmax(0, 1fr) auto;
+  grid-template-areas:
+    "image info    remove"
+    "image stepper sum";
+  align-items: center;
+  gap: 8px 14px;
+  padding: 16px 0;
+}
+
+.cart-item + .cart-item {
+  border-top: 1px solid var(--color-border);
+}
+
+.cart-item__image {
+  grid-area: image;
+  align-self: start;
+  width: 64px;
+  height: 64px;
+  object-fit: cover;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-s);
+}
+
+.cart-item__info {
+  grid-area: info;
+}
+
+.cart-item__name {
+  margin: 0;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.cart-item__meta {
+  margin: 2px 0 0;
+  font-size: 13px;
+  color: var(--color-text-muted);
+}
+
+.cart-item__remove {
+  grid-area: remove;
+  justify-self: end;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  color: var(--color-text-muted);
+  background: transparent;
+  border: 0;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: color var(--transition), background-color var(--transition);
+}
+
+.cart-item__remove:hover {
+  color: var(--color-price);
+  background: #fdecee;
+}
+
+.cart-item__stepper {
+  grid-area: stepper;
+  justify-self: start;
+}
+
+.cart-item__sum {
+  grid-area: sum;
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+  text-align: right;
+  white-space: nowrap;
+}
+
+/* Empty state */
+
+.cart-empty {
+  padding: 32px 0 28px;
+  text-align: center;
+}
+
+.cart-empty[hidden] {
+  display: none;
+}
+
+.cart-empty__title {
+  margin: 0 0 4px;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.cart-empty__text {
+  margin: 0 0 20px;
+  color: var(--color-text-muted);
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
   *::after {
     transition: none !important;
+    animation: none !important;
   }
 }
