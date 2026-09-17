@@ -20,9 +20,6 @@
     inc: form.querySelector('[data-cart-inc]'),
     qty: form.querySelector('[data-cart-qty]'),
 
-    summary: form.querySelector('[data-cart-summary]'),
-    list: form.querySelector('[data-cart-list]'),
-    total: form.querySelector('[data-cart-total]'),
 
     cartButton: document.querySelector('.cart-button'),
     cartCount: document.querySelector('[data-cart-count]'),
@@ -150,7 +147,6 @@
 
     renderBuyControl();
     renderPackBadges();
-    renderSummary(items, total);
     renderCartButton(count);
     renderModal(items, count, total);
   }
@@ -172,24 +168,6 @@
       badge.hidden = qty === 0;
       badge.textContent = qty;
     });
-  }
-
-  function renderSummary(items, total) {
-    els.list.textContent = '';
-
-    items.forEach(function (item) {
-      const li = document.createElement('li');
-      const name = document.createElement('span');
-      const cost = document.createElement('span');
-      li.className = 'cart-summary__item';
-      name.textContent = item.input.value + ' г × ' + item.qty;
-      cost.textContent = formatPrice(item.sum);
-      li.append(name, cost);
-      els.list.append(li);
-    });
-
-    els.summary.hidden = items.length === 0;
-    els.total.textContent = formatPrice(total);
   }
 
   function renderCartButton(count) {

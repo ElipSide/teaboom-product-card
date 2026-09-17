@@ -374,12 +374,6 @@ a {
   color: var(--color-success);
 }
 
-@media (min-width: 1200px) {
-  .cart-summary {
-    grid-column: 1 / -1;
-  }
-}
-
 /* Packs (переключатель фасовки) */
 
 .packs {
@@ -624,50 +618,6 @@ a {
   font-weight: 700;
   text-align: center;
   font-variant-numeric: tabular-nums;
-}
-
-/* Cart summary
-   ========================================================================== */
-
-.cart-summary {
-  padding-top: 16px;
-  font-size: 14px;
-  border-top: 1px dashed var(--color-border);
-}
-
-.cart-summary[hidden] {
-  display: none;
-}
-
-.cart-summary__title {
-  margin: 0 0 8px;
-  font-weight: 600;
-}
-
-.cart-summary__list {
-  display: grid;
-  gap: 4px;
-  margin: 0 0 10px;
-  padding: 0;
-  list-style: none;
-}
-
-.cart-summary__item {
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
-}
-
-.cart-summary__item span:last-child {
-  font-weight: 600;
-  white-space: nowrap;
-}
-
-.cart-summary__total {
-  display: flex;
-  justify-content: space-between;
-  margin: 0;
-  font-size: 16px;
 }
 
 /* Brew hints
