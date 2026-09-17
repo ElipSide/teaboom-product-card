@@ -306,14 +306,9 @@ a {
   color: var(--color-success);
 }
 
-.buy__submit {
-  width: 100%;
-}
-
 @media (min-width: 1200px) {
-  .buy__submit {
-    width: auto;
-    min-width: 220px;
+  .cart-summary {
+    grid-column: 1 / -1;
   }
 }
 
@@ -372,6 +367,28 @@ a {
 .pack__input:focus-visible + .pack__name {
   outline: 2px solid var(--color-text);
   outline-offset: 2px;
+}
+
+/* Сколько упаковок этой фасовки уже в корзине */
+.pack__qty {
+  position: absolute;
+  top: -7px;
+  right: -5px;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 5px;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 20px;
+  text-align: center;
+  color: #fff;
+  background: var(--color-success);
+  border-radius: 10px;
+  pointer-events: none;
+}
+
+.pack__qty[hidden] {
+  display: none;
 }
 
 /* Price */
@@ -448,11 +465,141 @@ a {
   flex-shrink: 0;
 }
 
-/* Кратковременное состояние после клика */
-.button.is-added {
+.button--success {
   color: #fff;
   background: var(--color-success);
-  box-shadow: none;
+}
+
+.button--success:hover {
+  background: #2f7a2f;
+  box-shadow: 0 6px 16px rgba(58, 143, 58, 0.35);
+}
+
+/* Cart control: «В корзину» ⇄ [✓][− N +]
+   ========================================================================== */
+
+.cart-control {
+  width: 100%;
+}
+
+@media (min-width: 1200px) {
+  .cart-control {
+    width: 240px;
+  }
+}
+
+.cart-control__add {
+  width: 100%;
+}
+
+.cart-control__add[hidden],
+.cart-control__added[hidden] {
+  display: none;
+}
+
+.cart-control__added {
+  display: flex;
+  gap: 8px;
+}
+
+.cart-control__link {
+  flex-shrink: 0;
+  width: 52px;
+  padding: 0;
+  text-decoration: none;
+}
+
+.stepper {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 52px;
+  padding: 4px;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-s);
+}
+
+.stepper__button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  color: var(--color-text);
+  background: transparent;
+  border: 0;
+  border-radius: var(--radius-s);
+  cursor: pointer;
+  transition: background-color var(--transition);
+}
+
+.stepper__button:hover {
+  background: var(--color-accent);
+}
+
+.stepper__button:active {
+  transform: translateY(1px);
+}
+
+.stepper__button:disabled {
+  color: var(--color-border);
+  background: transparent;
+  cursor: default;
+}
+
+.stepper__value {
+  min-width: 2ch;
+  font-size: 18px;
+  font-weight: 700;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Cart summary
+   ========================================================================== */
+
+.cart-summary {
+  padding-top: 16px;
+  font-size: 14px;
+  border-top: 1px dashed var(--color-border);
+}
+
+.cart-summary[hidden] {
+  display: none;
+}
+
+.cart-summary__title {
+  margin: 0 0 8px;
+  font-weight: 600;
+}
+
+.cart-summary__list {
+  display: grid;
+  gap: 4px;
+  margin: 0 0 10px;
+  padding: 0;
+  list-style: none;
+}
+
+.cart-summary__item {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.cart-summary__item span:last-child {
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.cart-summary__total {
+  display: flex;
+  justify-content: space-between;
+  margin: 0;
+  font-size: 16px;
 }
 
 /* Brew hints
